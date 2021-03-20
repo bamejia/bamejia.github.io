@@ -40,13 +40,13 @@ export const DYNAMIC_IMAGE_PATH = new Map([
 export const PLAYER_DEFAULT = {
     X: 50,
     Y: 50,
-    W: 80,
-    H: 45,
+    W: 40,
+    H: 22,
 
     X_SPEED: 0,
     Y_SPEED: 0,
-    TOP_X_SPEED: 25,
-    TOP_Y_SPEED: 25,
+    TOP_X_SPEED: 16,
+    TOP_Y_SPEED: 16,
     TOTAL_X_SPEED: 0,
     TOTAL_Y_SPEED: 0,
 
@@ -59,7 +59,7 @@ export const ACTION_LENGTH = new Map(
     Object.values(Action).map(action => {
         switch(action){
             case Action.BOOST:
-                return [action, 100];
+                return [action, 50];
             default:
                 return [action, 50];
         }
