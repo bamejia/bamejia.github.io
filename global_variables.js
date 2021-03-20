@@ -54,7 +54,7 @@ export const PLAYER_DEFAULT = {
     CURRENT_ACTIONS: new Map(),
     COLOR: "#ff00aa",
     MODEL_TYPE: DYNAMIC_MODEL_TYPE.PLAYER_1,
-    ACTIONS_LEFT: new Map([[Action.BOOST, 3], [Action.SHOOT, 3]])
+    ACTIONS_LEFT: new Map([[Action.BOOST, 3], [Action.SHOOT, 5]])
 }
 
 export const ACTION_LENGTH = new Map(
