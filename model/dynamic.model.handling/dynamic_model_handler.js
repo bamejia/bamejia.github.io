@@ -84,8 +84,13 @@ export default class DynamicModelHandler{
                     // console.log("SHOOTING");
                     break;
                 case Action.BOOST:
-                    if(dynamicModel.currentActions.get(action) == undefined || dynamicModel.currentActions.get(action) <= 0){
-                        dynamicModel.currentActions.set(action, ACTION_LENGTH.get(action))
+                    let boostsLeft = dynamicModel.actionsLeft.get(action);
+                    if(boostsLeft > 0){  // Checks to see if player has boosts left
+                        if(dynamicModel.currentActions.get(action) == undefined || dynamicModel.currentActions.get(action) <= 0){
+                            dynamicModel.currentActions.set(action, ACTION_LENGTH.get(action));
+                            boostsLeft -= 1;  // Uses up a boost
+                            dynamicModel.actionsLeft.set(action, boostsLeft);
+                        }
                     }
                     break;
                 case Action.NONE:

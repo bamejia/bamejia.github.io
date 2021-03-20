@@ -12,7 +12,7 @@ export default class DynamicModel{
     constructor({x=50, y=50, w=50, h=50, xSpeed=0, ySpeed=0, topXSpeed=5, topYSpeed=5, 
                 totalXSpeed=0, totalYSpeed=0, direction=Direction.NONE, currentActions=null, color="#ff00aa"}){
         if(this.constructor == DynamicModel){
-            throw new Error(" Object of Abstract Class cannot be created");
+            throw new Error("Object of Abstract Class cannot be created");
         }else{
             this.x = x;
             this.y = y;
@@ -31,10 +31,10 @@ export default class DynamicModel{
         }
         
     }
-    update(){
-        throw new Error("Abstract Method has no implementation");
-    }
-    draw(ctx){
-        throw new Error("Abstract Method has no implementation");
-    }
+    // update(){
+    //     throw new Error("Abstract Method has no implementation");
+    // }
+    // draw(ctx){
+    //     throw new Error("Abstract Method has no implementation");
+    // }
 }
