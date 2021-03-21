@@ -159,7 +159,7 @@ export default class ModelHandler{
             case Direction.WEST:
                 xLoc = dynamicModel.x  + dynamicModel.w - dynamicModel.xSpeed;
                 yLoc = dynamicModel.y;
-                width = dynamicModel.w;
+                width = dynamicModel.xSpeed;
                 height = dynamicModel.h;
                 break;
             case Direction.STOP:
