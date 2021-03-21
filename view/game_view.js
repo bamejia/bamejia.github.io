@@ -1,16 +1,17 @@
+import HUDView from "/view/hud_view.js";
 import { DYNAMIC_MODEL_TYPE, DYNAMIC_IMAGE_PATH } from "/global_variables.js";
 // import { DYNAMIC_IMAGE_PATH } from "/global_variables.js";
 // import * as ThinkPhp from "https://github.com/thinkphp/rotate.git";
 
 export default class GameView{
     constructor(CANVAS_WIDTH, CANVAS_HEIGHT){
-        this.CANVAS_WIDTH = CANVAS_WIDTH;
-        this.CANVAS_HEIGHT = CANVAS_HEIGHT;
+        this.width = CANVAS_WIDTH;
+        this.height = CANVAS_HEIGHT;
         
         this.canvas = document.createElement("canvas");
         this.canvas.setAttribute("id", "game-screen");
-        this.canvas.setAttribute("width", CANVAS_WIDTH);
-        this.canvas.setAttribute("height", CANVAS_HEIGHT);
+        this.canvas.setAttribute("width", this.width);
+        this.canvas.setAttribute("height", this.height);
 
         let body = document.getElementById("game-body");
         body.appendChild(this.canvas);
@@ -31,14 +32,24 @@ export default class GameView{
         // rotateAngle = rotateAngle + 90;
 
         this.dynamicModelImages = [];
-    }
-    draw(dynamicModels){
-        // this.ctx.clearRect(0, 0, this.CANVAS_WIDTH, this.CANVAS_HEIGHT);
 
+        this.hudView = new HUDView(this);
+    }
+    draw(dynamicModels, staticModels){
+        this.ctx.clearRect(0, 0, this.width, this.height);
+
+        // Draws all static models
+        staticModels.forEach(model =>{
+            this.ctx.fillStyle = model.color;
+            this.ctx.fillRect(model.x, model.y, model.w, model.h);
+        });
+
+        // Draws all dynamic models
         dynamicModels.forEach(model => {
-            // this.ctx.fillStyle = model.color;
-            // this.ctx.fillRect(model.x, model.y, model.w, model.h);
             this.ctx.drawImage(this.image, model.x, model.y, model.w, model.h);
         });
+
+        this.hudView.drawHUD(dynamicModels);
+
     }
 }

@@ -50,7 +50,7 @@ export const PLAYER_DEFAULT = {
     TOTAL_X_SPEED: 0,
     TOTAL_Y_SPEED: 0,
 
-    DIRECTION: Direction.NONE,
+    DIRECTION: Direction.STOP,
     CURRENT_ACTIONS: new Map(),
     COLOR: "#ff00aa",
     MODEL_TYPE: DYNAMIC_MODEL_TYPE.PLAYER_1,
@@ -67,6 +67,16 @@ export const ACTION_LENGTH = new Map(
         }
     })
 );
+
+export const PLAYER_TRAIL_DEFAULT = {
+    X: PLAYER_DEFAULT.X,
+    Y: PLAYER_DEFAULT.Y,
+    W: PLAYER_DEFAULT.W,
+    H: PLAYER_DEFAULT.H,
+
+    COLOR: PLAYER_DEFAULT.COLOR,
+    MODEL_TYPE: PLAYER_DEFAULT.MODEL_TYPE
+}
 
 // For Testing
 export const BOTTOM_BORDER = true;

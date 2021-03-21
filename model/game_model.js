@@ -1,4 +1,4 @@
-import DynamicModelHandler from "/model/dynamic.model.handling/dynamic_model_handler.js";
+import DynamicModelHandler from "/model/model.handling/model_handler.js";
 import Player from "/model/player.js";
 import Direction from "/enum/direction.js";
 
@@ -8,15 +8,15 @@ export default class GameModel{
         this.player = new Player({x:200});  // Destructuring
         
         this.dynamicModels.push(this.player);
+        
+        this.staticModels = [];
     }
-    update(direction, input_actions, deltaTime){
-        if(direction != Direction.NONE){
-            this.player.direction = direction;
-        }
+    update(input_direction, input_actions, deltaTime){
 
         let dmHandler = new DynamicModelHandler();
-        dmHandler.dynamicModelHandling(this.player, this.dynamicModels, input_actions, deltaTime);
+        dmHandler.dynamicModelHandling(this.player, this.dynamicModels, this.staticModels, input_direction, input_actions, deltaTime);
 
-        return this.dynamicModels;
+        let models = {dynamic_models: this.dynamicModels, static_models: this.staticModels};
+        return models;
     }
 }

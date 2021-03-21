@@ -26,8 +26,8 @@ export default class Controller{
         let deltaTime = timestamp - controller.lastTime;
         controller.lastTime = timestamp;
         
-        let dynamicModels = controller.model.update(controller.keyInputHandler.getDirection(), controller.keyInputHandler.getActions(), deltaTime);
-        controller.view.draw(dynamicModels);
+        let models = controller.model.update(controller.keyInputHandler.getDirection(), controller.keyInputHandler.getActions(), deltaTime);
+        controller.view.draw(models["dynamic_models"], models["static_models"]);
 
         window.requestAnimationFrame((timestamp) => {
             controller.gameloop(timestamp, controller);

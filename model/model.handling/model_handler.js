@@ -1,18 +1,19 @@
 import Action from "/enum/action.js";
 import Direction from "/enum/direction.js";
-import CollisionAndBoundaries from "/model/dynamic.model.handling/collision_and_boundaries.js";
+import CollisionAndBoundaries from "/model/model.handling/collision_and_boundaries.js";
 import {ACTION_LENGTH} from "/global_variables.js";
+import PlayerTrail from "/model/player_trail.js";
 
-export default class DynamicModelHandler{
+export default class ModelHandler{
 
     constructor(){
         this.cb = new CollisionAndBoundaries();
     }
 
-    dynamicModelHandling(dynamicModel, dynamicModels, input_actions, deltaTime){
+    dynamicModelHandling(dynamicModel, dynamicModels, staticModels, input_direction, input_actions, deltaTime){
 
         // Sets delta x and delta y (xSpeed and ySpeed) based on directions chosen by the player
-        this.directionHandler(dynamicModel);
+        this.directionHandler(dynamicModel, input_direction);
 
         // Adjusts delta x and delta y according to time passed
         dynamicModel.xSpeed /= deltaTime;
@@ -21,6 +22,9 @@ export default class DynamicModelHandler{
         // Checks to see what actions were chosen by the player
         this.actionHandler(dynamicModel, input_actions, deltaTime);
 
+        // Sets the trail a player leaves behind
+        this.playerTrailHandler(dynamicModel, staticModels);
+
         // Updates dynamic model's location
         dynamicModel.x += dynamicModel.xSpeed;
         dynamicModel.y += dynamicModel.ySpeed;
@@ -28,7 +32,10 @@ export default class DynamicModelHandler{
         this.collision_and_boundary_handler(dynamicModel, dynamicModels)
     }
 
-    directionHandler(dynamicModel){
+    directionHandler(dynamicModel, input_direction){
+        if(input_direction != Direction.getOpposite(dynamicModel.direction)){
+            if(input_direction != Direction.NONE){ dynamicModel.direction = input_direction; }
+        }
         switch(dynamicModel.direction){
             case Direction.NORTH:
                 dynamicModel.ySpeed = -dynamicModel.topYSpeed;
@@ -65,6 +72,8 @@ export default class DynamicModelHandler{
             case Direction.STOP:
                 dynamicModel.ySpeed = 0;
                 dynamicModel.xSpeed = 0;
+                break;
+            case Direction.NONE:
                 break;
             default:
                 // console.warn("direction is null");
@@ -120,6 +129,48 @@ export default class DynamicModelHandler{
                 }
                 dynamicModel.currentActions.set(key, value-(5/deltaTime));
             }
+        }
+    }
+
+    playerTrailHandler(dynamicModel, staticModels){
+        let xLoc = 0;
+        let yLoc = 0;
+        let width = 0;
+        let height = 0;
+        switch(dynamicModel.direction){
+            case Direction.NORTH:
+                xLoc = dynamicModel.x;
+                yLoc = dynamicModel.y + dynamicModel.h - dynamicModel.ySpeed;
+                width = dynamicModel.w;
+                height = dynamicModel.ySpeed;
+                break;
+            case Direction.EAST:
+                xLoc = dynamicModel.x;
+                yLoc = dynamicModel.y;
+                width = dynamicModel.xSpeed;
+                height = dynamicModel.h;
+                break;
+            case Direction.SOUTH:
+                xLoc = dynamicModel.x;
+                yLoc = dynamicModel.y;
+                width = dynamicModel.w;
+                height = dynamicModel.ySpeed;
+                break;
+            case Direction.WEST:
+                xLoc = dynamicModel.x  + dynamicModel.w - dynamicModel.xSpeed;
+                yLoc = dynamicModel.y;
+                width = dynamicModel.w;
+                height = dynamicModel.h;
+                break;
+            case Direction.STOP:
+                break;
+            default:
+                console.warn("Unhandled direction is assigned");
+                break;
+        }
+        if(dynamicModel.direction != Direction.STOP){
+            staticModels.push(new PlayerTrail({x:xLoc, y:yLoc, w:width, h:height, 
+                color:dynamicModel.color, modelType:dynamicModel.modelType}));
         }
     }
 
