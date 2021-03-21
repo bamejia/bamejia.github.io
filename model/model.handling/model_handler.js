@@ -140,7 +140,7 @@ export default class ModelHandler{
         switch(dynamicModel.direction){
             case Direction.NORTH:
                 xLoc = dynamicModel.x;
-                yLoc = dynamicModel.y + dynamicModel.h - dynamicModel.ySpeed;
+                yLoc = dynamicModel.y + dynamicModel.h;
                 width = dynamicModel.w;
                 height = dynamicModel.ySpeed;
                 break;
@@ -157,7 +157,7 @@ export default class ModelHandler{
                 height = dynamicModel.ySpeed;
                 break;
             case Direction.WEST:
-                xLoc = dynamicModel.x  + dynamicModel.w - dynamicModel.xSpeed;
+                xLoc = dynamicModel.x  + dynamicModel.w;
                 yLoc = dynamicModel.y;
                 width = dynamicModel.xSpeed;
                 height = dynamicModel.h;
