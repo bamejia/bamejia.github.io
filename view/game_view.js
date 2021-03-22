@@ -38,11 +38,18 @@ export default class GameView{
     draw(dynamicModels, staticModels){
         this.ctx.clearRect(0, 0, this.width, this.height);
 
-        // Draws all static models
-        staticModels.forEach(model =>{
+        // // Draws all static models
+        // staticModels.forEach(model =>{
+        //     this.ctx.fillStyle = model.color;
+        //     this.ctx.fillRect(model.x, model.y, model.w, model.h);
+        // });
+
+        let index = staticModels.length;
+        while(index--){
+            let model = staticModels[index];
             this.ctx.fillStyle = model.color;
             this.ctx.fillRect(model.x, model.y, model.w, model.h);
-        });
+        }
 
         // Draws all dynamic models
         dynamicModels.forEach(model => {

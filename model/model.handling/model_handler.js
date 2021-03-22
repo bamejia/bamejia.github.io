@@ -4,6 +4,8 @@ import CollisionAndBoundaries from "/model/model.handling/collision_and_boundari
 import {ACTION_LENGTH} from "/global_variables.js";
 import PlayerTrail from "/model/player_trail.js";
 
+let gCount = 0;
+
 export default class ModelHandler{
 
     constructor(){
@@ -102,6 +104,9 @@ export default class ModelHandler{
                         }
                     }
                     break;
+                case Action.STOP:
+                    dynamicModel.direction = Direction.STOP;
+                    break;
                 case Action.NONE:
                     break;
                 default:
@@ -115,7 +120,7 @@ export default class ModelHandler{
             if(value > 0){
                 switch(key){
                     case Action.SHOOT:
-                        // console.log("SHOOTING");
+                        console.log("SHOOTING");
                         break;
                     case Action.BOOST:
                         if(Math.abs(dynamicModel.xSpeed) != dynamicModel.topXSpeed * 2){ dynamicModel.xSpeed *= 2.8; }
@@ -163,14 +168,41 @@ export default class ModelHandler{
                 height = dynamicModel.h;
                 break;
             case Direction.STOP:
+                xLoc = dynamicModel.x;
+                yLoc = dynamicModel.y;
+                width = dynamicModel.xSpeed;
+                height = dynamicModel.ySpeed;
                 break;
             default:
                 console.warn("Unhandled direction is assigned");
                 break;
         }
-        if(dynamicModel.direction != Direction.STOP){
-            staticModels.push(new PlayerTrail({x:xLoc, y:yLoc, w:width, h:height, 
-                color:dynamicModel.color, modelType:dynamicModel.modelType}));
+
+        let createNewTrailObject = true;
+        if(staticModels.length > 0){
+            let lastStaticModel = staticModels[staticModels.length - 1];
+
+            if(lastStaticModel.direction == dynamicModel.direction || dynamicModel.direction == Direction.STOP){ // make even better when direction == stop, right now makes a new path object with direction == Direction.STOP
+                createNewTrailObject = false;
+
+                if(xLoc == lastStaticModel.x){
+                    lastStaticModel.h = Math.round(lastStaticModel.h + height);
+                }else if(yLoc == lastStaticModel.y){
+                    lastStaticModel.w = Math.round(lastStaticModel.w + width);
+                }else{
+                    console.warn("Last path does not equal current x or y");
+                }
+            }else{ // round makes path catch up to car, fix it here
+                
+            }
+        }
+
+        if(gCount == 0) { console.log(staticModels.length);}
+        gCount = (gCount + 1) % 100; 
+        
+        if(createNewTrailObject){
+            staticModels.push(new PlayerTrail({x:xLoc, y:yLoc, w:Math.round(width), h:Math.round(height), 
+                color:dynamicModel.color, modelType:dynamicModel.modelType, direction:dynamicModel.direction}));
         }
     }
 

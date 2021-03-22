@@ -5,8 +5,7 @@ const ARROW_KEY_NAMES = {
     ARROW_UP: "arrowup",
     ARROW_RIGHT: "arrowright",
     ARROW_DOWN: "arrowdown",
-    ARROW_LEFT: "arrowleft",
-    S: "s"
+    ARROW_LEFT: "arrowleft"
 };
 
 export class KeyInputHandler{
@@ -46,9 +45,6 @@ export class KeyInputHandler{
                 case ARROW_KEY_NAMES["ARROW_LEFT"]:  // ArrowLeft
                     chosenDirection = Direction.WEST;
                     break;
-                // case ARROW_KEY_NAMES["S"]:
-                //     chosenDirection = Dirction.NONE;
-                //     break;
                 default:
                     console.warn("Incorrect keys passed filter");
                     chosenDirection = Direction.NONE;
@@ -130,6 +126,9 @@ export class KeyInputHandler{
                     break;
                 case "z":
                     actions.push(Action.SHOOT);
+                    break;
+                case "s":
+                    actions.push(Action.STOP);
                     break;
                 default:
                     break;
