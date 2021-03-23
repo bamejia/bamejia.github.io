@@ -186,8 +186,8 @@ export default class ModelHandler{
                         console.log("SHOOTING");
                         break;
                     case Action.BOOST:
-                        if(Math.abs(dynamicModel.xSpeed) != dynamicModel.topXSpeed * 2){ dynamicModel.xSpeed *= 2.8; }
-                        if(Math.abs(dynamicModel.ySpeed) != dynamicModel.topYSpeed * 2){ dynamicModel.ySpeed *= 2.8; }
+                        if(Math.abs(dynamicModel.xSpeed) != dynamicModel.topXSpeed * 3){ dynamicModel.xSpeed *= 3; }
+                        if(Math.abs(dynamicModel.ySpeed) != dynamicModel.topYSpeed * 3){ dynamicModel.ySpeed *= 3; }
                         break;
                     case Action.NONE:
                         break;

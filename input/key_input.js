@@ -9,22 +9,21 @@ const ARROW_KEY_NAMES = new Map([
     ["ARROW_DOWN", "arrowdown"],
     ["ARROW_LEFT", "arrowleft"]
 ]);
-// {
-//     ARROW_UP: "arrowup",
-//     ARROW_RIGHT: "arrowright",
-//     ARROW_DOWN: "arrowdown",
-//     ARROW_LEFT: "arrowleft"
-// };
 
 export class KeyInputHandler{
     constructor(){
         this.keysDown = new Map();
         document.addEventListener("keydown", (event) =>{
             let key = event.key.toLowerCase();
-            // this.keysDown[key] = key;
-            this.keysDown.set(key, key);
-            // alert(event.key);
-            // this.keysDown.add(event.key);
+            if([...ARROW_KEY_NAMES.values()].some(kName => key == kName)){
+                this.directionKey = key;
+            }
+            else{
+                // this.keysDown[key] = key;
+                this.keysDown.set(key, key);
+                // alert(event.key);
+                // this.keysDown.add(event.key);
+            }
         });
         document.addEventListener("keyup", (event) =>{
             // this.keysDown.delete(event.key);
@@ -40,14 +39,14 @@ export class KeyInputHandler{
         // let directionKeys = Object.values(this.keysDown).filter(
         //     key => Object.values(ARROW_KEY_NAMES).some(kName => key == kName)
         // );
-        let directionKeys = [...this.keysDown.values()].filter(
-            value => [...ARROW_KEY_NAMES.values()].some(kName => value == kName)
-        );
+        // let directionKeys = [...this.keysDown.values()].filter(
+        //     value => [...ARROW_KEY_NAMES.values()].some(kName => value == kName)
+        // );
         // let chosenDirections = [...this.keysDown]; 
 
-        if(directionKeys.length == 1){
+        if(this.directionKey){
         // if(this.keysDown.length == 1){
-            switch(directionKeys[0]){
+            switch(this.directionKey){
                 case ARROW_KEY_NAMES.get("ARROW_UP"):  // ArrowUp
                     chosenDirection = Direction.NORTH;
                     break;
