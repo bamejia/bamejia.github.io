@@ -38,9 +38,6 @@ export default class ModelHandler{
 
     directionHandler(dynamicModel, input_direction, gameGrid){
 
-        if(gCount == 0) { console.log(input_direction);}
-        gCount = (gCount + 1) % 100; 
-
         if(input_direction != Direction.getOpposite(dynamicModel.direction)){
             switch(input_direction){
                 case Direction.NORTH:
