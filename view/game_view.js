@@ -53,7 +53,9 @@ export default class GameView{
 
         // Draws all dynamic models
         dynamicModels.forEach(model => {
-            this.ctx.drawImage(this.image, model.x, model.y, model.w, model.h);
+            this.ctx.fillStyle = model.color;
+            this.ctx.fillRect(model.x, model.y, model.w, model.h);
+            // this.ctx.drawImage(this.image, model.x, model.y, model.w, model.h);
         });
 
         this.hudView.drawHUD(dynamicModels);

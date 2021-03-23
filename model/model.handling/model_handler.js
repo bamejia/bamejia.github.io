@@ -3,19 +3,21 @@ import Direction from "/enum/direction.js";
 import CollisionAndBoundaries from "/model/model.handling/collision_and_boundaries.js";
 import {ACTION_LENGTH} from "/global_variables.js";
 import PlayerTrail from "/model/player_trail.js";
+import ColorUtil from "/util/color_util.js";
 
-// let gCount = 0; // for testing
+let gCount = 0; // for testing
 
 export default class ModelHandler{
 
     constructor(){
         this.cb = new CollisionAndBoundaries();
+        this.colorUtil = new ColorUtil();
     }
 
-    dynamicModelHandling(dynamicModel, dynamicModels, staticModels, input_direction, input_actions, deltaTime){
+    dynamicModelHandling(dynamicModel, dynamicModels, staticModels, input_direction, input_actions, gameGrid, deltaTime){
 
         // Sets delta x and delta y (xSpeed and ySpeed) based on directions chosen by the player
-        this.directionHandler(dynamicModel, input_direction);
+        this.directionHandler(dynamicModel, input_direction, gameGrid);
 
         // Adjusts delta x and delta y according to time passed
         dynamicModel.xSpeed /= deltaTime;
@@ -34,9 +36,70 @@ export default class ModelHandler{
         this.collision_and_boundary_handler(dynamicModel, dynamicModels)
     }
 
-    directionHandler(dynamicModel, input_direction){
+    directionHandler(dynamicModel, input_direction, gameGrid){
         if(input_direction != Direction.getOpposite(dynamicModel.direction)){
-            if(input_direction != Direction.NONE){ dynamicModel.direction = input_direction; }
+            switch(input_direction){
+                case Direction.NORTH:
+                    let roundedX1 = Math.round(dynamicModel.x);
+                    if(gameGrid.x.has(roundedX1)){
+                        dynamicModel.x = roundedX1;
+                        dynamicModel.direction = input_direction;
+                    }
+                    break;
+                case Direction.SOUTH:
+                    let roundedX2 = Math.round(dynamicModel.x);
+                    if(gameGrid.x.has(roundedX2)){
+                        dynamicModel.x = roundedX2;
+                        dynamicModel.direction = input_direction;
+                    }
+                    break;
+                // case Direction.NORTHEAST:
+                //     break;
+                case Direction.EAST:
+                    let roundedY1 = Math.round(dynamicModel.y);
+                    if(gameGrid.y.has(roundedY1)){
+                        dynamicModel.y = roundedY1;
+                        dynamicModel.direction = input_direction;
+                    }
+                    break;
+                case Direction.WEST:
+                    let roundedY2 = Math.round(dynamicModel.y);
+                    if(gameGrid.y.has(roundedY2)){
+                        dynamicModel.y = roundedY2;
+                        dynamicModel.direction = input_direction;
+                    }
+                    break;
+                // case Direction.SOUTHEAST:
+                //     dynamicModel.ySpeed = dynamicModel.topYSpeed;
+                //     dynamicModel.xSpeed = dynamicModel.topXSpeed;
+                //     break;
+                // case Direction.SOUTH:
+                //     dynamicModel.ySpeed = dynamicModel.topYSpeed;
+                //     dynamicModel.xSpeed = 0;
+                //     break;
+                // case Direction.SOUTHWEST:
+                //     dynamicModel.ySpeed = dynamicModel.topYSpeed;
+                //     dynamicModel.xSpeed = -dynamicModel.topXSpeed;
+                //     break;
+                // case Direction.WEST:
+                //     dynamicModel.ySpeed = 0;
+                //     dynamicModel.xSpeed = -dynamicModel.topXSpeed;
+                //     break;
+                // case Direction.NORTHWEST:
+                //     dynamicModel.ySpeed = -dynamicModel.topYSpeed;
+                //     dynamicModel.xSpeed = -dynamicModel.topXSpeed;
+                //     break;
+                case Direction.STOP:
+                    dynamicModel.direction = input_direction;
+                    break;
+                case Direction.NONE:
+                    break;
+                default:
+                    console.warn("input direction is null");
+                    dynamicModel.direction = Direction.STOP;
+                    break;
+            }
+            // if(input_direction != Direction.NONE){ dynamicModel.direction = input_direction; }
         }
         switch(dynamicModel.direction){
             case Direction.NORTH:
@@ -78,7 +141,7 @@ export default class ModelHandler{
             case Direction.NONE:
                 break;
             default:
-                // console.warn("direction is null");
+                console.warn("dynamicModel direction is null");
                 dynamicModel.direction = Direction.STOP;
                 dynamicModel.ySpeed = 0;
                 dynamicModel.xSpeed = 0;
@@ -219,7 +282,7 @@ export default class ModelHandler{
         
         if(createNewTrailObject){
             staticModels.push(new PlayerTrail({x:xLoc, y:yLoc, w:Math.round(width), h:Math.round(height), 
-                color:dynamicModel.color, modelType:dynamicModel.modelType, direction:dynamicModel.direction}));
+                color:this.colorUtil.increase_brightness(dynamicModel.color, 35), modelType:dynamicModel.modelType, direction:dynamicModel.direction}));
         }
     }
 

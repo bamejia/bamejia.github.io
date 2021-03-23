@@ -11,7 +11,7 @@ export default class Controller{
 
     constructor(){
         this.keyInputHandler = new KeyInputHandler();
-        this.model = new GameModel();
+        this.model = new GameModel(CANVAS.W, CANVAS.H);
         this.view = new GameView(CANVAS.W, CANVAS.H);
         this.lastTime = 0;
     }

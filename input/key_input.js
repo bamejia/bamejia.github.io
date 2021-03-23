@@ -1,19 +1,28 @@
 import Action from "/enum/action.js";
 import Direction from "/enum/direction.js";
 
-const ARROW_KEY_NAMES = {
-    ARROW_UP: "arrowup",
-    ARROW_RIGHT: "arrowright",
-    ARROW_DOWN: "arrowdown",
-    ARROW_LEFT: "arrowleft"
-};
+let gCount = 0;  //For testing
+
+const ARROW_KEY_NAMES = new Map([
+    ["ARROW_UP", "arrowup"],
+    ["ARROW_RIGHT", "arrowright"],
+    ["ARROW_DOWN", "arrowdown"],
+    ["ARROW_LEFT", "arrowleft"]
+]);
+// {
+//     ARROW_UP: "arrowup",
+//     ARROW_RIGHT: "arrowright",
+//     ARROW_DOWN: "arrowdown",
+//     ARROW_LEFT: "arrowleft"
+// };
 
 export class KeyInputHandler{
     constructor(){
-        this.keysDown = {};
+        this.keysDown = new Map();
         document.addEventListener("keydown", (event) =>{
             let key = event.key.toLowerCase();
-            this.keysDown[key] = key;
+            // this.keysDown[key] = key;
+            this.keysDown.set(key, key);
             // alert(event.key);
             // this.keysDown.add(event.key);
         });
@@ -21,28 +30,34 @@ export class KeyInputHandler{
             // this.keysDown.delete(event.key);
             // this.keysDown = this.keysDown.filter(k => k != event.key);
             let key = event.key.toLowerCase();
-            this.keysDown[key] = null;
+            // this.keysDown[key] = null;
+            this.keysDown.set(key, null);
         });
     }
 
     getDirection(){
         let chosenDirection = null;
-        let directionKeys = Object.values(this.keysDown).filter(
-            key => Object.values(ARROW_KEY_NAMES).some(kName => key == kName)
+        // let directionKeys = Object.values(this.keysDown).filter(
+        //     key => Object.values(ARROW_KEY_NAMES).some(kName => key == kName)
+        // );
+        let directionKeys = [...this.keysDown.values()].filter(
+            value => [...ARROW_KEY_NAMES.values()].some(kName => value == kName)
         );
-        // let chosenDirections = [...this.keysDown];
+        // let chosenDirections = [...this.keysDown]; 
+
         if(directionKeys.length == 1){
+        // if(this.keysDown.length == 1){
             switch(directionKeys[0]){
-                case ARROW_KEY_NAMES["ARROW_UP"]:  // ArrowUp
+                case ARROW_KEY_NAMES.get("ARROW_UP"):  // ArrowUp
                     chosenDirection = Direction.NORTH;
                     break;
-                case ARROW_KEY_NAMES["ARROW_RIGHT"]:  // ArrowRight
+                case ARROW_KEY_NAMES.get("ARROW_RIGHT"):  // ArrowRight
                     chosenDirection = Direction.EAST;
                     break;
-                case ARROW_KEY_NAMES["ARROW_DOWN"]:  // ArrowDown
+                case ARROW_KEY_NAMES.get("ARROW_DOWN"):  // ArrowDown
                     chosenDirection = Direction.SOUTH;
                     break;
-                case ARROW_KEY_NAMES["ARROW_LEFT"]:  // ArrowLeft
+                case ARROW_KEY_NAMES.get("ARROW_LEFT"):  // ArrowLeft
                     chosenDirection = Direction.WEST;
                     break;
                 default:
@@ -117,10 +132,15 @@ export class KeyInputHandler{
 
     getActions(){
         let actions = [];
-        let actionKeys = Object.values(this.keysDown);
+        let actionKeys = [...this.keysDown.values()];
         
-        actionKeys.forEach(key => {
-            switch(key){
+        // if(gCount == 0) { console.log(this.keysDown);}
+        // gCount = (gCount + 1) % 100;
+
+        actionKeys.forEach((value) => {
+            // if(gCount == 0) { console.log(key);}
+            // gCount = (gCount + 1) % 100;
+            switch(value){
                 case "x":
                     actions.push(Action.BOOST);
                     break;

@@ -38,21 +38,21 @@ export const DYNAMIC_IMAGE_PATH = new Map([
 
 // Default Player Values
 export const PLAYER_DEFAULT = {
-    X: 50,
-    Y: 50,
-    W: 40,
-    H: 22,
+    X: 40,
+    Y: 40,
+    W: 10,  //40   //22
+    H: 10,
 
     X_SPEED: 0,
     Y_SPEED: 0,
-    TOP_X_SPEED: 16,
-    TOP_Y_SPEED: 16,
+    TOP_X_SPEED: 10,
+    TOP_Y_SPEED: 10,
     TOTAL_X_SPEED: 0,
     TOTAL_Y_SPEED: 0,
 
     DIRECTION: Direction.STOP,
     CURRENT_ACTIONS: new Map(),
-    COLOR: "#ff00aa",
+    COLOR: "#ff0099",
     MODEL_TYPE: DYNAMIC_MODEL_TYPE.PLAYER_1,
     ACTIONS_LEFT: new Map([[Action.BOOST, 3], [Action.SHOOT, 5]])
 }
@@ -74,7 +74,7 @@ export const PLAYER_TRAIL_DEFAULT = {
     W: PLAYER_DEFAULT.W,
     H: PLAYER_DEFAULT.H,
 
-    COLOR: PLAYER_DEFAULT.COLOR,
+    COLOR: "#ff00aa", //PLAYER_DEFAULT.COLOR,
     MODEL_TYPE: PLAYER_DEFAULT.MODEL_TYPE,
     DIRECTION: PLAYER_DEFAULT.DIRECTION
 }
