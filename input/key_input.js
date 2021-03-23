@@ -29,8 +29,14 @@ export class KeyInputHandler{
             // this.keysDown.delete(event.key);
             // this.keysDown = this.keysDown.filter(k => k != event.key);
             let key = event.key.toLowerCase();
+            if([...ARROW_KEY_NAMES.values()].some(kName => key == kName)){
+                if(this.directionKey == key){
+                    this.directionKey = null;
+                }
+            }else{
+                this.keysDown.set(key, null);
+            }
             // this.keysDown[key] = null;
-            this.keysDown.set(key, null);
         });
     }
 
@@ -60,7 +66,7 @@ export class KeyInputHandler{
                     chosenDirection = Direction.WEST;
                     break;
                 default:
-                    console.warn("Incorrect keys passed filter");
+                    // console.warn("Incorrect keys passed filter");
                     chosenDirection = Direction.NONE;
                     break;
             }
