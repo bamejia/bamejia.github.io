@@ -4,7 +4,7 @@ import CollisionAndBoundaries from "/model/model.handling/collision_and_boundari
 import {ACTION_LENGTH} from "/global_variables.js";
 import PlayerTrail from "/model/player_trail.js";
 
-let gCount = 0;
+// let gCount = 0; // for testing
 
 export default class ModelHandler{
 
@@ -186,19 +186,36 @@ export default class ModelHandler{
                 createNewTrailObject = false;
 
                 if(xLoc == lastStaticModel.x){
-                    lastStaticModel.h = Math.round(lastStaticModel.h + height);
+                    lastStaticModel.h += height;
                 }else if(yLoc == lastStaticModel.y){
-                    lastStaticModel.w = Math.round(lastStaticModel.w + width);
+                    lastStaticModel.w += width;
                 }else{
                     console.warn("Last path does not equal current x or y");
                 }
             }else{ // round makes path catch up to car, fix it here
                 
+                if(xLoc == lastStaticModel.x){
+                    // lastStaticModel.h = Math.round(lastStaticModel.h + height);
+                    if(lastStaticModel.h < 0) lastStaticModel.h -= Math.abs(height);
+                    else lastStaticModel.h += Math.abs(height);
+                }else if(yLoc == lastStaticModel.y){
+                    // lastStaticModel.w = Math.round(lastStaticModel.w + width);
+                    if(lastStaticModel.w < 0) lastStaticModel.w -= Math.abs(width);
+                    else lastStaticModel.w += Math.abs(width);
+                }else if(lastStaticModel.x + lastStaticModel.w == xLoc){
+                    if(lastStaticModel.h < 0) lastStaticModel.h -= Math.abs(height);
+                    else lastStaticModel.h += Math.abs(height);
+                }else if(lastStaticModel.y + lastStaticModel.h == yLoc){
+                    if(lastStaticModel.w < 0) lastStaticModel.w -= Math.abs(width);
+                    else lastStaticModel.w += Math.abs(width);
+                }else{
+                    console.warn("Last path does not equal current x, y, w, h")
+                }
             }
         }
 
-        if(gCount == 0) { console.log(staticModels.length);}
-        gCount = (gCount + 1) % 100; 
+        // if(gCount == 0) { console.log(staticModels.length);}
+        // gCount = (gCount + 1) % 100; 
         
         if(createNewTrailObject){
             staticModels.push(new PlayerTrail({x:xLoc, y:yLoc, w:Math.round(width), h:Math.round(height), 

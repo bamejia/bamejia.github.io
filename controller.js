@@ -16,7 +16,7 @@ export default class Controller{
         this.lastTime = 0;
     }
 
-    async run(){
+    run(){
         window.requestAnimationFrame((timestamp) => {
             this.gameloop(timestamp, this)
         });
@@ -34,7 +34,4 @@ export default class Controller{
         });
     }
 
-    sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
 }

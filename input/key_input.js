@@ -15,7 +15,7 @@ export class KeyInputHandler{
             let key = event.key.toLowerCase();
             this.keysDown[key] = key;
             // alert(event.key);
-            // this.keysDown.add(event.key); 
+            // this.keysDown.add(event.key);
         });
         document.addEventListener("keyup", (event) =>{
             // this.keysDown.delete(event.key);
